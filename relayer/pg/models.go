@@ -13,7 +13,7 @@ type EventCheckPoint struct {
 	EventName   string `gorm:"uniqueIndex:idx_chain_event;type:varchar(255)"`
 	BlockNumber uint64 `gorm:"type:bigint"`
 	TxHash      string `gorm:"type:varchar(255)"`
-	TxIndex     uint
+	LogIndex    uint
 	EventKey    string `gorm:"type:varchar(255)"`
 }
 
@@ -69,25 +69,6 @@ type CallContractWithToken struct {
 	Amount               uint64 `gorm:"type:bigint"`
 }
 
-// type Approved struct {
-// 	ID               string `gorm:"primaryKey;type:varchar(255)"`
-// 	SourceChain      string `gorm:"type:varchar(255)"`
-// 	DestinationChain string `gorm:"type:varchar(255)"`
-// 	TxHash           string `gorm:"type:varchar(255)"`
-// 	BlockNumber      int
-// 	LogIndex         int
-// 	SourceAddress    string `gorm:"type:varchar(255)"`
-// 	ContractAddress  string `gorm:"type:varchar(255)"`
-// 	SourceTxHash     string `gorm:"type:varchar(255)"`
-// 	SourceEventIndex *big.Int
-// 	PayloadHash      string `gorm:"type:varchar(255)"`
-// 	Symbol           string `gorm:"type:varchar(255)"`
-// 	Amount           *big.Int
-// 	CommandId        string
-// 	CreatedAt        time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
-// 	UpdatedAt        time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
-// }
-
 type CallContractApproved struct {
 	gorm.Model
 	ID               string `gorm:"primaryKey;type:varchar(255)"`
@@ -108,17 +89,32 @@ type CallContractApproved struct {
 	UpdatedAt        time.Time     `gorm:"type:timestamp(6);default:current_timestamp(6)"`
 }
 
-type ProtocolInfo struct {
+type DApp struct {
 	gorm.Model
-	//ID                   string `gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
-	ChainID              string `gorm:"column:chain_id"`               //Evm chain id
-	ChainName            string `gorm:"column:chain_name;not null"`    //Evm chain name
-	BTCAddressHex        string `gorm:"column:btc_address_hex"`        //Btc address
-	PublicKeyHex         string `gorm:"column:public_key_hex"`         //Btc public key
-	SmartContractAddress string `gorm:"column:smart_contract_address"` //Evm contract address which is extended from the IAxelarExecutable
-	TokenContractAddress string `gorm:"column:token_contract_address"` //Evm ERC20 token contract address
-	State                bool   `gorm:"column:state"`
-	ChainEndpoint        string `gorm:"column:chain_endpoint"` //Service endpoint for handling evm tx
-	RPCUrl               string `gorm:"column:rpc_url"`        //Service endpoint for handling psbt signing
-	AccessToken          string `gorm:"column:access_token"`   //Access token for the signing service
+	ChainID              string         `gorm:"column:chain_id"`               //Evm chain id
+	ChainName            string         `gorm:"column:chain_name;not null"`    //Evm chain name
+	BTCAddressHex        string         `gorm:"column:btc_address_hex"`        //Btc address
+	PublicKeyHex         string         `gorm:"column:public_key_hex"`         //Btc public key
+	SmartContractAddress string         `gorm:"column:smart_contract_address"` //Evm contract address which is extended from the IAxelarExecutable
+	TokenContractAddress string         `gorm:"column:token_contract_address"` //Evm ERC20 token contract address
+	State                bool           `gorm:"column:state"`
+	ChainEndpoint        string         `gorm:"column:chain_endpoint"` //Service endpoint for handling evm tx
+	RPCUrl               string         `gorm:"column:rpc_url"`        //Service endpoint for handling psbt signing
+	AccessToken          string         `gorm:"column:access_token"`   //Access token for the signing service
+	CustodialGroupID     uint           `gorm:"not null" json:"-"`
+	CustodialGroup       CustodialGroup `gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
+}
+
+type Custodial struct {
+	gorm.Model
+	Name            string `gorm:"column:name"`
+	BtcPublicKeyHex string `gorm:"uniqueIndex; not null;column:btc_public_key_hex"`
+}
+
+type CustodialGroup struct {
+	gorm.Model
+	Name           string      `gorm:"column:name"`
+	TaprootAddress string      `gorm:"uniqueIndex; not null;column:taproot_address"` // Calculate from BtcPublicKeyHex of each Custodials
+	Quorum         uint        `gorm:"not null;column:quorum"`
+	Custodials     []Custodial `gorm:"many2many:custodial_group_members;"`
 }
