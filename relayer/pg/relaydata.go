@@ -144,3 +144,165 @@ func (pg *PgAdapter) FindRelayDataByContractCall(contractCall *CallContract) ([]
 
 	return relayDatas, nil
 }
+
+func preprocessOption(option *Options) error {
+	if option.Size <= 0 {
+		option.Size = 10
+	}
+	if option.Offset < 0 {
+		option.Offset = 0
+	}
+	return nil
+}
+
+type Options struct {
+	Size         int
+	Offset       int
+	EventId      string
+	EventType    string
+	EventTypes   []string
+	StakerPubkey string
+}
+
+func (pg *PgAdapter) GetRelayerDatas(options *Options) ([]RelayData, int, error) {
+	var relayDatas []RelayData
+	var totalCount int64
+
+	err := preprocessOption(options)
+	if err != nil {
+		return nil, 0, fmt.Errorf("failed to preprocess options: %w", err)
+	}
+
+	query := pg.PgClient.Model(&RelayData{})
+
+	// Add joins and preloads - using LEFT JOIN and ROW_NUMBER() to match original SQL
+	query = query.Joins(`
+		LEFT JOIN (
+			SELECT 
+				c.*,
+				ROW_NUMBER() OVER (PARTITION BY c.id ORDER BY c.block_number) as rn
+			FROM call_contracts c
+		) CallContract ON relay_data.id = CallContract.id AND CallContract.rn = 1
+	`).Joins(`
+		LEFT JOIN (
+			SELECT 
+				ca.*,
+				ROW_NUMBER() OVER (PARTITION BY ca.source_address, ca.contract_address, ca.payload_hash ORDER BY ca.block_number) as rn
+			FROM call_contract_approveds ca
+		) call_contract_approveds ON CallContract.source_address = call_contract_approveds.source_address 
+			AND CallContract.contract_address = call_contract_approveds.contract_address 
+			AND CallContract.payload_hash = call_contract_approveds.payload_hash 
+			AND call_contract_approveds.rn = 1
+	`)
+
+	// Add conditions
+	if options.EventId != "" {
+		query = query.Where("relay_data.id = ?", options.EventId)
+	}
+
+	// Get total count when not searching by ID
+	if options.EventId == "" {
+		if err := query.Count(&totalCount).Error; err != nil {
+			return nil, 0, fmt.Errorf("failed to get relay data count: %w", err)
+		}
+	}
+
+	// Add pagination and ordering
+	query = query.Order("relay_data.created_at DESC").
+		Offset(options.Offset).
+		Limit(options.Size)
+
+	// Execute the query
+	err = query.
+		Preload("CallContract").
+		Preload("CallContract.CallContractApproved").
+		Find(&relayDatas).Error
+	if err != nil {
+		return nil, 0, fmt.Errorf("failed to get relay data: %w", err)
+	}
+
+	// For EventId searches, use the length of results as the count
+	if options.EventId != "" {
+		totalCount = int64(len(relayDatas))
+	}
+
+	return relayDatas, int(totalCount), nil
+}
+
+func (pg *PgAdapter) GetExecutedVaultBonding(options *Options) ([]RelayData, error) {
+	var relayDatas []RelayData
+	err := preprocessOption(options)
+	if err != nil {
+		return nil, fmt.Errorf("failed to preprocess options: %w", err)
+	}
+
+	query := pg.PgClient.Model(&RelayData{}).
+		Select(`
+			relay_data.*,
+			call_contracts.block_number as c_block_number,
+			call_contracts.tx_hash as c_tx_hash,
+			call_contracts.tx_hex as c_tx_hex,
+			call_contracts.log_index as c_log_index,
+			call_contracts.contract_address as c_contract_address,
+			call_contracts.payload as c_payload,
+			call_contracts.payload_hash as c_payload_hash,
+			call_contracts.source_address as c_source_address,
+			call_contracts.staker_public_key as c_staker_public_key,
+			call_contracts.amount as c_amount,
+			command_executeds.amount as ce_amount
+		`).
+		Joins("JOIN call_contracts ON relay_data.id = call_contracts.id").
+		Joins("LEFT JOIN command_executeds ON command_executeds.reference_tx_hash = call_contracts.tx_hash").
+		Where("relay_data.status = ?", 2)
+
+	if options.StakerPubkey != "" {
+		query = query.Where("call_contracts.staker_public_key = ?", options.StakerPubkey)
+	}
+
+	query = query.Order("relay_data.created_at DESC").
+		Offset(options.Offset).
+		Limit(options.Size)
+
+	var results []struct {
+		RelayData
+		CBlockNumber     *uint64 `gorm:"column:c_block_number"`
+		CTxHash          *string `gorm:"column:c_tx_hash"`
+		CTxHex           []byte  `gorm:"column:c_tx_hex"`
+		CLogIndex        *uint   `gorm:"column:c_log_index"`
+		CContractAddress *string `gorm:"column:c_contract_address"`
+		CPayload         []byte  `gorm:"column:c_payload"`
+		CPayloadHash     *string `gorm:"column:c_payload_hash"`
+		CSourceAddress   *string `gorm:"column:c_source_address"`
+		CStakerPublicKey *string `gorm:"column:c_staker_public_key"`
+		CAmount          *uint64 `gorm:"column:c_amount"`
+		CEAmount         *string `gorm:"column:ce_amount"`
+	}
+
+	if err := query.Find(&results).Error; err != nil {
+		return nil, fmt.Errorf("failed to get executed vault bonding: %w", err)
+	}
+
+	// Convert results to RelayData slice
+	for _, result := range results {
+		relayData := result.RelayData
+		relayData.CallContract = &CallContract{
+			ID:              relayData.ID,
+			BlockNumber:     *result.CBlockNumber,
+			TxHash:          *result.CTxHash,
+			TxHex:           result.CTxHex,
+			LogIndex:        *result.CLogIndex,
+			ContractAddress: *result.CContractAddress,
+			Payload:         result.CPayload,
+			PayloadHash:     *result.CPayloadHash,
+			SourceAddress:   *result.CSourceAddress,
+			StakerPublicKey: result.CStakerPublicKey,
+			Amount:          *result.CAmount,
+			CommandExecuted: &CommandExecuted{
+				Amount: result.CEAmount,
+			},
+		}
+		relayDatas = append(relayDatas, relayData)
+	}
+
+	return relayDatas, nil
+}
