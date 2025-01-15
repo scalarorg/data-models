@@ -17,7 +17,7 @@ type TokenSentApproved struct {
 	LogIndex           uint
 	Amount             uint64 `gorm:"type:bigint"`
 	Symbol             string `gorm:"type:varchar(255)"`
-	Status             int    `gorm:"default:0"`
+	Status             string `gorm:"type:varchar(32);default:approved"`
 	ContractAddress    string `gorm:"type:varchar(255)"`
 	SourceTxHash       string `gorm:"type:varchar(255)"`
 	SourceEventIndex   uint64
