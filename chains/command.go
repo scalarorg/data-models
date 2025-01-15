@@ -15,14 +15,10 @@ type MintCommand struct {
 }
 type CommandExecuted struct {
 	gorm.Model
-	ID               string `gorm:"primaryKey;type:varchar(255)"`
-	SourceChain      string `gorm:"type:varchar(255)"`
-	DestinationChain string `gorm:"type:varchar(255)"`
-	TxHash           string `gorm:"type:varchar(255)"`
-	BlockNumber      uint64
-	LogIndex         uint
-	CommandId        string
-	Status           int     `gorm:"default:0"`
-	ReferenceTxHash  *string `gorm:"type:varchar(255)"`
-	Amount           *string `gorm:"type:varchar(255)"`
+	SourceChain string `gorm:"type:varchar(255)"`
+	Address     string `gorm:"type:varchar(255)"`
+	TxHash      string `gorm:"type:varchar(255)"`
+	BlockNumber uint64
+	LogIndex    uint
+	CommandId   string
 }
