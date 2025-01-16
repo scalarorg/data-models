@@ -37,7 +37,7 @@ type ContractCall struct {
 	SourceChain         string `gorm:"type:varchar(64)"`
 	SourceAddress       string `gorm:"type:varchar(255)"`
 	Payload             []byte
-	PayloadHash         string             `gorm:"type:varchar(255);uniqueIndex"`
+	PayloadHash         string             `gorm:"type:varchar(64);"`
 	DestinationChain    string             `gorm:"type:varchar(64)"`
 	DestContractAddress string             `gorm:"type:varchar(255)"`
 	StakerPublicKey     *string            `gorm:"type:varchar(255)"`
