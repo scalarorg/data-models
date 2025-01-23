@@ -27,14 +27,40 @@ var BatchedCommandsStatus_value = map[string]int32{
 	"BATCHED_COMMANDS_STATUS_SIGNED":      3,
 }
 
+type CommandStatus int32
+
+const (
+	CommandPending     CommandStatus = 0
+	CommandBroadcasted CommandStatus = 1
+	CommandExecuted    CommandStatus = 2
+	CommandFailed      CommandStatus = 3
+)
+
+var CommandStatus_name = map[int32]string{
+	0: "COMMAND_STATUS_PENDING",
+	1: "COMMAND_STATUS_BROADCASTED",
+	2: "COMMAND_STATUS_EXECUTED",
+	3: "COMMAND_STATUS_FAILED",
+}
+
+var CommandStatus_value = map[string]int32{
+	"COMMAND_STATUS_PENDING":     0,
+	"COMMAND_STATUS_BROADCASTED": 1,
+	"COMMAND_STATUS_EXECUTED":    2,
+	"COMMAND_STATUS_FAILED":      3,
+}
+
 type Command struct {
 	gorm.Model
 	CommandID      string `gorm:"type:varchar(255)"`
-	BatchCommandID []byte
-	Params         []byte
+	BatchCommandID string `gorm:"type:varchar(255)"`
+	ChainID        string `gorm:"type:varchar(255)"`
+	Params         string `gorm:"type:text"`
 	KeyID          string `gorm:"type:varchar(255)"`
-	CommandType    int
+	CommandType    string `gorm:"type:varchar(255)"`
 	Payload        []byte
+	Status         CommandStatus
+	ExecutedTxHash string `gorm:"type:varchar(255)"`
 }
 type BatchCommand struct {
 	gorm.Model

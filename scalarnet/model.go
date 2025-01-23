@@ -57,7 +57,6 @@ type ContractCallApproved struct {
 	Sender           string    `gorm:"type:varchar(255)"`
 	ContractAddress  string    `gorm:"type:varchar(255)"`
 	PayloadHash      string    `gorm:"type:varchar(255)"`
-	Status           int       `gorm:"default:1"`
 	SourceTxHash     string    `gorm:"type:varchar(255)"`
 	SourceEventIndex uint64    `gorm:"type:bigint"`
 	CreatedAt        time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
