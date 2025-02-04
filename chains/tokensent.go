@@ -41,7 +41,6 @@ type TokenSent struct {
 	Amount               uint64          `gorm:"type:bigint"`
 	Symbol               string          `gorm:"type:varchar(255)"`
 	Status               TokenSentStatus `gorm:"default:pending"`
-	RelayDataID          string          `gorm:"type:varchar(255)"`
 	CreatedAt            time.Time       `gorm:"type:timestamp(6);default:current_timestamp(6)"`
 	UpdatedAt            time.Time       `gorm:"type:timestamp(6);default:current_timestamp(6)"`
 	DeletedAt            gorm.DeletedAt
