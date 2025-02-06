@@ -26,6 +26,8 @@ const (
 	TokenSentStatusFailed TokenSentStatus = "failed"
 	// TokenSentStatusCancelled indicates the transfer was cancelled
 	TokenSentStatusCancelled TokenSentStatus = "cancelled"
+
+	TokenSentStatusDeleted TokenSentStatus = "deleted"
 )
 
 type TokenSent struct {
