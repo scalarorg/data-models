@@ -30,10 +30,10 @@ var BatchedCommandsStatus_value = map[string]int32{
 type CommandStatus int32
 
 const (
-	CommandPending     CommandStatus = 0
-	CommandBroadcasted CommandStatus = 1
-	CommandExecuted    CommandStatus = 2
-	CommandFailed      CommandStatus = 3
+	CommandStatusPending     CommandStatus = 0
+	CommandStatusBroadcasted CommandStatus = 1
+	CommandStatusExecuted    CommandStatus = 2
+	CommandStatusFailed      CommandStatus = 3
 )
 
 var CommandStatus_name = map[int32]string{
