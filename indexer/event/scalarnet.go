@@ -1,4 +1,4 @@
-package indexer
+package event
 
 type ContractCallSubmitted struct {
 	BaseEvent

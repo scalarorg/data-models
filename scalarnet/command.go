@@ -52,7 +52,7 @@ var CommandStatus_value = map[string]int32{
 
 type Command struct {
 	gorm.Model
-	CommandID      string `gorm:"type:varchar(255)"`
+	CommandID      string `gorm:"uniqueIndex; type:varchar(255)"`
 	BatchCommandID string `gorm:"type:varchar(255)"`
 	ChainID        string `gorm:"type:varchar(255)"`
 	Params         string `gorm:"type:text"`

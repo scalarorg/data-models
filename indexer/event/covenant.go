@@ -1,4 +1,4 @@
-package indexer
+package event
 
 type SigningPsbtStarted struct {
 	BaseEvent

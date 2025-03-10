@@ -29,7 +29,7 @@ type CallContract struct {
 	Status             int    `gorm:"default:0"`
 	SourceTxHash       string `gorm:"type:varchar(255)"`
 	SourceEventIndex   uint64
-	CommandId          string
+	CommandID          string
 	CreatedAt          time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
 	UpdatedAt          time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
 	DeletedAt          gorm.DeletedAt

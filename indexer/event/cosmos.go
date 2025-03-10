@@ -1,4 +1,4 @@
-package indexer
+package event
 
 type Heartbeat struct {
 	BaseEvent

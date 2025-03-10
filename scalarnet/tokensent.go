@@ -21,7 +21,7 @@ type TokenSentApproved struct {
 	ContractAddress    string `gorm:"type:varchar(255)"`
 	SourceTxHash       string `gorm:"type:varchar(255)"`
 	SourceEventIndex   uint64
-	CommandId          string
+	CommandID          string
 	TransferID         uint64    `gorm:"type:bigint"`
 	CreatedAt          time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
 	UpdatedAt          time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`

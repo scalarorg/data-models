@@ -20,5 +20,5 @@ type CommandExecuted struct {
 	TxHash      string `gorm:"type:varchar(255)"`
 	BlockNumber uint64
 	LogIndex    uint
-	CommandId   string
+	CommandID   string `gorm:"uniqueIndex; type:varchar(255)"`
 }
