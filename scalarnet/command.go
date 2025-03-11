@@ -53,16 +53,15 @@ var CommandStatus_value = map[string]int32{
 }
 
 type Command struct {
-	ID        uint      `gorm:"primarykey"`
-	CreatedAt time.Time `gorm:"primaryKey"`
 	UpdatedAt time.Time
 
-	CommandID      string `gorm:"uniqueIndex; type:varchar(255)"`
-	BatchCommandID string `gorm:"type:varchar(255)"`
-	ChainID        string `gorm:"type:varchar(255)"`
-	Params         string `gorm:"type:text"`
-	KeyID          string `gorm:"type:varchar(255)"`
-	CommandType    string `gorm:"type:varchar(255)"`
+	CommandID      string    `gorm:"primaryKey"`
+	CreatedAt      time.Time `gorm:"primaryKey"`
+	BatchCommandID string    `gorm:"type:varchar(255)"`
+	ChainID        string    `gorm:"type:varchar(255)"`
+	Params         string    `gorm:"type:text"`
+	KeyID          string    `gorm:"type:varchar(255)"`
+	CommandType    string    `gorm:"type:varchar(255)"`
 	Payload        []byte
 	Status         CommandStatus
 	ExecutedTxHash string `gorm:"type:varchar(255)"`
