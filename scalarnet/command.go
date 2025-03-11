@@ -55,7 +55,7 @@ var CommandStatus_value = map[string]int32{
 type Command struct {
 	UpdatedAt time.Time
 
-	CommandID      string    `gorm:"primaryKey"`
+	CommandID      string    `gorm:"primaryKey;uniqueIndex"`
 	CreatedAt      time.Time `gorm:"primaryKey;type:timestamp(6);default:current_timestamp(6)"`
 	BatchCommandID string    `gorm:"type:varchar(255)"`
 	ChainID        string    `gorm:"type:varchar(255)"`
