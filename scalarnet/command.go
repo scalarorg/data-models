@@ -1,6 +1,8 @@
 package scalarnet
 
 import (
+	"time"
+
 	"gorm.io/gorm"
 )
 
@@ -51,7 +53,10 @@ var CommandStatus_value = map[string]int32{
 }
 
 type Command struct {
-	gorm.Model
+	ID        uint      `gorm:"primarykey"`
+	CreatedAt time.Time `gorm:"primaryKey"`
+	UpdatedAt time.Time
+
 	CommandID      string `gorm:"uniqueIndex; type:varchar(255)"`
 	BatchCommandID string `gorm:"type:varchar(255)"`
 	ChainID        string `gorm:"type:varchar(255)"`
