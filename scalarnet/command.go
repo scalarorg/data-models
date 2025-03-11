@@ -56,7 +56,7 @@ type Command struct {
 	UpdatedAt time.Time
 
 	CommandID      string    `gorm:"primaryKey"`
-	CreatedAt      time.Time `gorm:"primaryKey"`
+	CreatedAt      time.Time `gorm:"primaryKey;type:timestamp(6);default:current_timestamp(6)"`
 	BatchCommandID string    `gorm:"type:varchar(255)"`
 	ChainID        string    `gorm:"type:varchar(255)"`
 	Params         string    `gorm:"type:text"`

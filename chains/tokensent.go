@@ -31,7 +31,9 @@ const (
 )
 
 type TokenSent struct {
-	EventID              string `gorm:"primaryKey"`
+	EventID   string    `gorm:"primaryKey;type:varchar(255)"`
+	CreatedAt time.Time `gorm:"primaryKey;type:timestamp(6);default:current_timestamp(6)"`
+
 	TxHash               string `gorm:"type:varchar(255)"`
 	BlockNumber          uint64 `gorm:"default:0"`
 	LogIndex             uint
@@ -43,7 +45,6 @@ type TokenSent struct {
 	Amount               uint64          `gorm:"type:bigint"`
 	Symbol               string          `gorm:"type:varchar(255)"`
 	Status               TokenSentStatus `gorm:"default:pending"`
-	CreatedAt            time.Time       `gorm:"type:timestamp(6);default:current_timestamp(6)"`
 	UpdatedAt            time.Time       `gorm:"type:timestamp(6);default:current_timestamp(6)"`
 	DeletedAt            gorm.DeletedAt
 }
