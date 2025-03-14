@@ -176,8 +176,8 @@ type TokenConfirmation struct {
 	Chain        string `gorm:"type:varchar(32)" json:"chain"`
 	Asset        string `gorm:"-" json:"asset"`
 	Symbol       string `gorm:"type:varchar(16)" json:"symbol"`
-	TokenAddress string `gorm:"type:varchar(128)" json:"token_address"`
-	TxID         string `gorm:"type:varchar(128)" json:"tx_id"`
-	EventID      string `gorm:"type:varchar(128)" json:"event_id"`
+	TokenAddress string `gorm:"type:varchar(128)" json:"tokenAddress"`
+	TxID         string `gorm:"type:varchar(128)" json:"txID"`
+	EventID      string `gorm:"type:varchar(128)" json:"eventID"`
 	Action       string `gorm:"type:varchar(128)" json:"action"`
 }

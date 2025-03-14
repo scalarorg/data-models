@@ -48,3 +48,12 @@ type TokenSent struct {
 	UpdatedAt            time.Time       `gorm:"type:timestamp(6);default:current_timestamp(6)"`
 	DeletedAt            gorm.DeletedAt
 }
+
+type TokenDeployed struct {
+	gorm.Model
+	Chain        string `gorm:"type:varchar(32)"`
+	BlockNumber  uint64 `gorm:"type:bigint"`
+	TxHash       string `gorm:"type:varchar(255)"`
+	Symbol       string `gorm:"type:varchar(32)"`
+	TokenAddress string `gorm:"type:varchar(255)"`
+}
