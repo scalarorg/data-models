@@ -57,3 +57,12 @@ type TokenDeployed struct {
 	Symbol       string `gorm:"type:varchar(32)"`
 	TokenAddress string `gorm:"type:varchar(255)"`
 }
+
+type SwitchedPhase struct {
+	gorm.Model
+	Chain           string `gorm:"type:varchar(32)"`
+	BlockNumber     uint64 `gorm:"type:bigint"`
+	TxHash          string `gorm:"type:varchar(255)"`
+	SessionSequence uint64 `gorm:"type:bigint"`
+	Phase           uint8  `gorm:"type:int"`
+}
