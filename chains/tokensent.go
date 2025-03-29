@@ -64,5 +64,6 @@ type SwitchedPhase struct {
 	BlockNumber     uint64 `gorm:"type:bigint"`
 	TxHash          string `gorm:"type:varchar(255)"`
 	SessionSequence uint64 `gorm:"type:bigint"`
-	Phase           uint8  `gorm:"type:int"`
+	From            uint8  `gorm:"type:int"`
+	To              uint8  `gorm:"type:int"`
 }
