@@ -14,6 +14,17 @@ const (
 	RedeemStatusApproved RedeemStatus = "approved"
 )
 
+type SwitchedPhase struct {
+	gorm.Model
+	Chain             string `gorm:"type:varchar(32)"`
+	BlockNumber       uint64 `gorm:"type:bigint"`
+	TxHash            string `gorm:"type:varchar(255)"`
+	CustodianGroupUid string `gorm:"type:varchar(64)"`
+	SessionSequence   uint64 `gorm:"type:bigint"`
+	From              uint8  `gorm:"type:int"`
+	To                uint8  `gorm:"type:int"`
+}
+
 type RedeemTx struct {
 	gorm.Model
 	Chain             string `gorm:"type:varchar(32)"`
