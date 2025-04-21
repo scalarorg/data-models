@@ -31,6 +31,7 @@ type RedeemTx struct {
 	BlockNumber       uint64 `gorm:"type:bigint"`
 	TxHash            string `gorm:"type:varchar(255)"`
 	CustodianGroupUid string `gorm:"type:varchar(255)"`
+	SessionSequence   uint64 `gorm:"type:bigint"`
 	Symbol            string `gorm:"type:varchar(32)"`
 	TokenAddress      string `gorm:"type:varchar(255)"`
 	Amount            uint64 `gorm:"type:bigint"`
