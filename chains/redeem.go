@@ -7,7 +7,7 @@ type RedeemStatus string
 
 const (
 	// RedeemStatusExecuting indicates the transaction is just broadcast to the network
-	RedeemStatusExecuting RedeemStatus = "excuting"
+	RedeemStatusExecuting RedeemStatus = "executing"
 	// RedeemStatusVerifying indicates the transfer is broadcasting to the scalar for verification
 	RedeemStatusVerifying RedeemStatus = "verifying"
 	// RedeemStatusApproved indicates the transfer is approved by the scalar network
