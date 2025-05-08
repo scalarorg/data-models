@@ -29,6 +29,7 @@ type RedeemTx struct {
 	gorm.Model
 	Chain             string `gorm:"type:varchar(32)"`
 	BlockNumber       uint64 `gorm:"type:bigint"`
+	BlockTime         uint64 `gorm:"default:0"`
 	TxHash            string `gorm:"type:varchar(255)"`
 	CustodianGroupUid string `gorm:"type:varchar(255)"`
 	SessionSequence   uint64 `gorm:"type:bigint"`

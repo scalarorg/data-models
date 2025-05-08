@@ -32,6 +32,7 @@ type ContractCall struct {
 	EventID            string `gorm:"primaryKey"`
 	TxHash             string `gorm:"type:varchar(255)"`
 	BlockNumber        uint64 `gorm:"default:0"`
+	BlockTime          uint64 `gorm:"default:0"`
 	LogIndex           uint
 	SourceChain        string             `gorm:"type:varchar(64)"`
 	SourceAddress      string             `gorm:"type:varchar(255)"`
@@ -39,11 +40,12 @@ type ContractCall struct {
 	DestinationAddress string             `gorm:"type:varchar(255)"`
 	Status             ContractCallStatus `gorm:"default:pending"`
 	Payload            []byte
-	PayloadHash        string    `gorm:"type:varchar(255)"`
-	ExecuteHash        string    `gorm:"type:varchar(255)"`
-	CreatedAt          time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
-	UpdatedAt          time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
-	DeletedAt          gorm.DeletedAt
+	PayloadHash        string `gorm:"type:varchar(255)"`
+	ExecuteHash        string `gorm:"type:varchar(255)"`
+
+	CreatedAt time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
+	UpdatedAt time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
+	DeletedAt gorm.DeletedAt
 }
 
 type ContractCallWithToken struct {
@@ -51,4 +53,6 @@ type ContractCallWithToken struct {
 	TokenContractAddress string `gorm:"type:varchar(255)"`
 	Symbol               string `gorm:"type:varchar(255)"`
 	Amount               uint64 `gorm:"type:bigint"`
+	CustodianGroupUid    string `gorm:"type:varchar(255)"` //For redeem evm tx
+	SessionSequence      uint64 `gorm:"type:bigint"`       //For redeem evm tx
 }

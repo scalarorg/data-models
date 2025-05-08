@@ -36,6 +36,7 @@ type TokenSent struct {
 
 	TxHash               string `gorm:"type:varchar(255)"`
 	BlockNumber          uint64 `gorm:"default:0"`
+	BlockTime            uint64 `gorm:"default:0"`
 	LogIndex             uint
 	SourceChain          string          `gorm:"type:varchar(64)"`
 	SourceAddress        string          `gorm:"type:varchar(255)"`
