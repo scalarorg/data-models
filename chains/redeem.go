@@ -1,6 +1,10 @@
 package chains
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 // RedeemStatus represents the status of a token transfer
 type RedeemStatus string
@@ -12,6 +16,7 @@ const (
 	RedeemStatusVerifying RedeemStatus = "verifying"
 	// RedeemStatusApproved indicates the transfer is approved by the scalar network
 	RedeemStatusApproved RedeemStatus = "approved"
+	RedeemStatusSuccess  RedeemStatus = "success"
 )
 
 type SwitchedPhase struct {
@@ -24,8 +29,30 @@ type SwitchedPhase struct {
 	From              uint8  `gorm:"type:int"`
 	To                uint8  `gorm:"type:int"`
 }
-
-type RedeemTx struct {
+type EvmRedeemTx struct {
+	EventID              string `gorm:"primaryKey"`
+	TxHash               string `gorm:"type:varchar(255)"`
+	BlockNumber          uint64 `gorm:"default:0"`
+	BlockTime            uint64 `gorm:"default:0"`
+	LogIndex             uint
+	SourceChain          string       `gorm:"type:varchar(64)"`
+	SourceAddress        string       `gorm:"type:varchar(255)"`
+	DestinationChain     string       `gorm:"type:varchar(64)"`
+	DestinationAddress   string       `gorm:"type:varchar(255)"`
+	Status               RedeemStatus `gorm:"default:pending"`
+	Payload              []byte
+	PayloadHash          string    `gorm:"type:varchar(255)"`
+	ExecuteHash          string    `gorm:"type:varchar(255)"`
+	TokenContractAddress string    `gorm:"type:varchar(255)"`
+	Symbol               string    `gorm:"type:varchar(255)"`
+	Amount               uint64    `gorm:"type:bigint"`
+	CustodianGroupUid    string    `gorm:"type:varchar(255)"` //For redeem evm tx
+	SessionSequence      uint64    `gorm:"type:bigint"`       //For redeem evm tx
+	CreatedAt            time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
+	UpdatedAt            time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
+	DeletedAt            gorm.DeletedAt
+}
+type BtcRedeemTx struct {
 	gorm.Model
 	Chain             string `gorm:"type:varchar(32)"`
 	BlockNumber       uint64 `gorm:"type:bigint"`
