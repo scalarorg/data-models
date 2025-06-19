@@ -3,6 +3,7 @@ package chains
 import (
 	"time"
 
+	"github.com/scalarorg/data-models/types"
 	"gorm.io/gorm"
 )
 
@@ -54,14 +55,17 @@ type EvmRedeemTx struct {
 }
 type BtcRedeemTx struct {
 	gorm.Model
-	Chain             string `gorm:"type:varchar(32)"`
-	BlockNumber       uint64 `gorm:"type:bigint"`
-	BlockTime         uint64 `gorm:"default:0"`
-	TxHash            string `gorm:"type:varchar(255)"`
-	CustodianGroupUid string `gorm:"type:varchar(255)"`
-	SessionSequence   uint64 `gorm:"type:bigint"`
-	Symbol            string `gorm:"type:varchar(32)"`
-	TokenAddress      string `gorm:"type:varchar(255)"`
-	Amount            uint64 `gorm:"type:bigint"`
-	Status            string `gorm:"type:varchar(32)"`
+	Chain             string            `gorm:"type:varchar(32)"`
+	BlockNumber       uint64            `gorm:"type:bigint"`
+	BlockTime         uint64            `gorm:"default:0"`
+	TxHash            string            `gorm:"type:varchar(255)"`
+	TxPosition        uint64            `gorm:"type:bigint"`
+	RawTx             []byte            `gorm:"type:bytea"`
+	MerkleProof       types.StringArray `gorm:"type:text[]"`
+	CustodianGroupUid string            `gorm:"type:varchar(255)"`
+	SessionSequence   uint64            `gorm:"type:bigint"`
+	Symbol            string            `gorm:"type:varchar(32)"`
+	TokenAddress      string            `gorm:"type:varchar(255)"`
+	Amount            uint64            `gorm:"type:bigint"`
+	Status            string            `gorm:"type:varchar(32)"`
 }

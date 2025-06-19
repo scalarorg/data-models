@@ -3,6 +3,7 @@ package chains
 import (
 	"time"
 
+	"github.com/scalarorg/data-models/types"
 	"gorm.io/gorm"
 )
 
@@ -31,21 +32,25 @@ const (
 )
 
 type TokenSent struct {
-	EventID              string `gorm:"primaryKey;type:varchar(255)"`
-	TxHash               string `gorm:"type:varchar(255)"`
-	BlockNumber          uint64 `gorm:"default:0"`
-	BlockTime            uint64 `gorm:"default:0"`
-	LogIndex             uint
-	SourceChain          string          `gorm:"type:varchar(64)"`
-	SourceAddress        string          `gorm:"type:varchar(255)"`
-	DestinationChain     string          `gorm:"type:varchar(64)"`
-	DestinationAddress   string          `gorm:"type:varchar(255)"`
-	TokenContractAddress string          `gorm:"type:varchar(255)"`
-	Amount               uint64          `gorm:"type:bigint"`
-	Symbol               string          `gorm:"type:varchar(255)"`
-	Status               TokenSentStatus `gorm:"default:pending"`
-	CreatedAt            time.Time       `gorm:"default:current_timestamp(6)"`
-	UpdatedAt            time.Time       `gorm:"type:timestamp(6);default:current_timestamp(6)"`
+	EventID              string            `gorm:"primaryKey;type:varchar(255)"`
+	TxHash               string            `gorm:"type:varchar(255)"`
+	RawTx                []byte            `gorm:"type:bytea"`
+	BlockNumber          uint64            `gorm:"default:0"`
+	BlockTime            uint64            `gorm:"default:0"`
+	LogIndex             uint              `gorm:"default:0"`
+	TxPosition           uint64            `gorm:"type:bigint"`
+	MerkleProof          types.StringArray `gorm:"type:text[]"`
+	SourceChain          string            `gorm:"type:varchar(64)"`
+	SourceAddress        string            `gorm:"type:varchar(255)"`
+	StakerPubkey         []byte            `gorm:"type:bytea"`
+	DestinationChain     string            `gorm:"type:varchar(64)"`
+	DestinationAddress   string            `gorm:"type:varchar(255)"`
+	TokenContractAddress string            `gorm:"type:varchar(255)"`
+	Amount               uint64            `gorm:"type:bigint"`
+	Symbol               string            `gorm:"type:varchar(255)"`
+	Status               TokenSentStatus   `gorm:"default:pending"`
+	CreatedAt            time.Time         `gorm:"default:current_timestamp(6)"`
+	UpdatedAt            time.Time         `gorm:"type:timestamp(6);default:current_timestamp(6)"`
 }
 
 type TokenDeployed struct {
