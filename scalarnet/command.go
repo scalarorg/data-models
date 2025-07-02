@@ -50,18 +50,18 @@ var CommandStatus_value = map[string]int32{
 	"COMMAND_STATUS_FAILED":      3,
 }
 
-type Command struct {
-	gorm.Model
-	CommandID      string `gorm:"uniqueIndex"`
-	BatchCommandID string `gorm:"type:varchar(255)"`
-	ChainID        string `gorm:"type:varchar(255)"`
-	Params         string `gorm:"type:text"`
-	KeyID          string `gorm:"type:varchar(255)"`
-	CommandType    string `gorm:"type:varchar(255)"`
-	Payload        []byte
-	Status         CommandStatus
-	ExecutedTxHash string `gorm:"type:varchar(255)"`
-}
+//	type Command struct {
+//		gorm.Model
+//		CommandID      string `gorm:"uniqueIndex"`
+//		BatchCommandID string `gorm:"type:varchar(255)"`
+//		ChainID        string `gorm:"type:varchar(255)"`
+//		Params         string `gorm:"type:text"`
+//		KeyID          string `gorm:"type:varchar(255)"`
+//		CommandType    string `gorm:"type:varchar(255)"`
+//		Payload        []byte
+//		Status         CommandStatus
+//		ExecutedTxHash string `gorm:"type:varchar(255)"`
+//	}
 type BatchCommand struct {
 	gorm.Model
 	BatchCommandID        []byte

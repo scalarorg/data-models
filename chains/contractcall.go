@@ -40,12 +40,27 @@ type ContractCall struct {
 	DestinationAddress string             `gorm:"type:varchar(255)"`
 	Status             ContractCallStatus `gorm:"default:pending"`
 	Payload            []byte
-	PayloadHash        string `gorm:"type:varchar(255)"`
-	ExecuteHash        string `gorm:"type:varchar(255)"`
+	PayloadHash        string    `gorm:"type:varchar(255)"`
+	ExecuteHash        string    `gorm:"type:varchar(255)"`
+	CreatedAt          time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
+	UpdatedAt          time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
+	DeletedAt          gorm.DeletedAt
+}
 
-	CreatedAt time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
-	UpdatedAt time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
-	DeletedAt gorm.DeletedAt
+type ContractCallApproved struct {
+	EventID          string    `gorm:"primaryKey"`
+	TxHash           string    `gorm:"type:varchar(255)"`
+	SourceChain      string    `gorm:"type:varchar(255)"`
+	DestinationChain string    `gorm:"type:varchar(255)"`
+	CommandID        string    `gorm:"type:varchar(255)"`
+	Sender           string    `gorm:"type:varchar(255)"`
+	ContractAddress  string    `gorm:"type:varchar(255)"`
+	PayloadHash      string    `gorm:"type:varchar(255)"`
+	SourceTxHash     string    `gorm:"type:varchar(255)"`
+	SourceEventIndex uint64    `gorm:"type:bigint"`
+	CreatedAt        time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
+	UpdatedAt        time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
+	DeletedAt        gorm.DeletedAt
 }
 
 type ContractCallWithToken struct {

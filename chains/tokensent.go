@@ -55,9 +55,9 @@ type TokenSent struct {
 
 type TokenDeployed struct {
 	gorm.Model
-	Chain        string `gorm:"type:varchar(32)"`
+	SourceChain  string `gorm:"type:varchar(32);uniqueIndex:idx_token_deployed_source_chain_token_address"`
+	TokenAddress string `gorm:"type:varchar(255);uniqueIndex:idx_token_deployed_source_chain_token_address"`
 	BlockNumber  uint64 `gorm:"type:bigint"`
 	TxHash       string `gorm:"type:varchar(255)"`
 	Symbol       string `gorm:"type:varchar(32)"`
-	TokenAddress string `gorm:"type:varchar(255)"`
 }
