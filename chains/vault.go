@@ -47,7 +47,7 @@ func (b *BtcBlockHeader) ParseHeaderEntry(headerEntry *HeaderEntry) error {
 type VaultTransaction struct {
 	gorm.Model
 	Chain                       string `gorm:"type:varchar(64);index:idx_vault_tx_chain_tx_hash,unique"`
-	BlockNumber                 uint64 `gorm:"type:bigint"`
+	BlockNumber                 uint64 `gorm:"type:bigint;index:idx_vault_tx_block_number"`
 	BlockHash                   string `gorm:"type:varchar(255)"`
 	TxHash                      string `gorm:"type:varchar(255);index:idx_vault_tx_chain_tx_hash,unique"`
 	TxPosition                  uint   `gorm:"type:int"`

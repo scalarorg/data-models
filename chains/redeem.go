@@ -22,11 +22,11 @@ const (
 
 type SwitchedPhase struct {
 	gorm.Model
-	SourceChain       string `gorm:"type:varchar(32);index:idx_chain_txhash,unique"`
-	TxHash            string `gorm:"type:varchar(255);index:idx_chain_txhash,unique"`
+	SourceChain       string `gorm:"type:varchar(32);index:idx_switched_phase,unique"`
+	TxHash            string `gorm:"type:varchar(255);index:idx_switched_phase,unique"`
 	BlockNumber       uint64 `gorm:"index:idx_block_number;type:bigint"`
-	CustodianGroupUid string `gorm:"index:idx_custodian_group_uid;type:varchar(64)"`
-	SessionSequence   uint64 `gorm:"index:session_sequence;type:bigint"`
+	CustodianGroupUid string `gorm:"index:idx_switched_phase,unique;type:varchar(64)"`
+	SessionSequence   uint64 `gorm:"index:idx_switched_phase,unique;type:bigint"`
 	From              uint8  `gorm:"type:int"`
 	To                uint8  `gorm:"type:int"`
 }
