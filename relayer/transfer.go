@@ -8,7 +8,7 @@ import (
 
 type TokenSentBlock struct {
 	gorm.Model
-	BlockNumber      uint64     `gorm:"type:bigint;index:idx_vault_block_number,unique"`
+	BlockNumber      uint64     `gorm:"type:bigint;index:idx_token_sent_block_number,unique"`
 	BlockHash        string     `gorm:"type:varchar(255)"`
 	Chain            string     `gorm:"type:varchar(64)"`
 	Status           string     `gorm:"type:varchar(32);default:'pending'"` // pending, processing, completed, failed
