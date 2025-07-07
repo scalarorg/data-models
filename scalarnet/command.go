@@ -50,6 +50,18 @@ var CommandStatus_value = map[string]int32{
 	"COMMAND_STATUS_FAILED":      3,
 }
 
+type MintCommand struct {
+	gorm.Model
+	TxHash           string `gorm:"type:varchar(64)"`
+	SourceChain      string `gorm:"type:varchar(20);not null"`
+	DestinationChain string `gorm:"type:varchar(20);not null"`
+	TransferID       uint64 `gorm:"type:varchar(50);not null"`
+	CommandID        string `gorm:"type:varchar(64);not null"`
+	Amount           int64
+	Symbol           string `gorm:"type:varchar(10);not null"`
+	Recipient        string `gorm:"type:varchar(64);not null"`
+}
+
 type Command struct {
 	gorm.Model
 	CommandID      string `gorm:"uniqueIndex"`
