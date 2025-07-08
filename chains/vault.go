@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 
+	"github.com/btcsuite/btcd/chaincfg/chainhash"
 	"gorm.io/gorm"
 )
 
@@ -14,7 +15,7 @@ type HeaderEntry struct {
 }
 type BtcBlockHeader struct {
 	Version       int32  `json:"version"` //TODO: remove this field
-	PrevBlockhash []byte `json:"prev_blockhash"`
+	PrevBlockHash string `json:"prev_block_hash"`
 	MerkleRoot    []byte `json:"merkle_root"`
 	Time          uint32 `json:"time"`
 	CompactTarget uint32 `json:"compact_target"`
@@ -34,7 +35,7 @@ func (b *BtcBlockHeader) ParseHeaderEntry(headerEntry *HeaderEntry) error {
 	nonce := binary.LittleEndian.Uint32(bytes[76:80])
 
 	b.Version = int32(version)
-	b.PrevBlockhash = bytes[4:36]
+	b.PrevBlockHash = chainhash.Hash(bytes[4:36]).String()
 	b.MerkleRoot = bytes[36:68]
 	b.Time = time
 	b.CompactTarget = compactTarget
