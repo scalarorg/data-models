@@ -6,7 +6,7 @@ type CommandExecuted struct {
 	gorm.Model
 	SourceChain string `gorm:"type:varchar(255)"`
 	Address     string `gorm:"type:varchar(255)"`
-	TxHash      string `gorm:"type:varchar(255)"`
+	TxHash      string `gorm:"type:varchar(255);index:idx_command_executed_tx_hash"`
 	BlockNumber uint64
 	BlockTime   uint64
 	LogIndex    uint

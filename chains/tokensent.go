@@ -38,7 +38,6 @@ type TokenSent struct {
 	BlockNumber          uint64            `gorm:"default:0"`
 	BlockTime            uint64            `gorm:"default:0"`
 	LogIndex             uint              `gorm:"default:0"`
-	TxPosition           uint64            `gorm:"type:bigint"`
 	MerkleProof          types.StringArray `gorm:"type:text[]"`
 	SourceChain          string            `gorm:"type:varchar(64)"`
 	SourceAddress        string            `gorm:"type:varchar(255)"`

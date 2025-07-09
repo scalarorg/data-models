@@ -3,7 +3,6 @@ package chains
 import (
 	"time"
 
-	"github.com/scalarorg/data-models/types"
 	"gorm.io/gorm"
 )
 
@@ -53,19 +52,30 @@ type EvmRedeemTx struct {
 	UpdatedAt            time.Time `gorm:"type:timestamp(6);default:current_timestamp(6)"`
 	DeletedAt            gorm.DeletedAt
 }
+
 type BtcRedeemTx struct {
 	gorm.Model
-	Chain             string            `gorm:"type:varchar(32)"`
-	BlockNumber       uint64            `gorm:"type:bigint"`
-	BlockTime         uint64            `gorm:"default:0"`
-	TxHash            string            `gorm:"type:varchar(255)"`
-	TxPosition        uint64            `gorm:"type:bigint"`
-	RawTx             []byte            `gorm:"type:bytea"`
-	MerkleProof       types.StringArray `gorm:"type:text[]"`
-	CustodianGroupUid string            `gorm:"type:varchar(255)"`
-	SessionSequence   uint64            `gorm:"type:bigint"`
-	Symbol            string            `gorm:"type:varchar(32)"`
-	TokenAddress      string            `gorm:"type:varchar(255)"`
-	Amount            uint64            `gorm:"type:bigint"`
-	Status            string            `gorm:"type:varchar(32)"`
+	Chain             string `gorm:"type:varchar(64);index:idx_btc_redeem_tx_chain_tx_hash,unique"`
+	BlockNumber       uint64 `gorm:"type:bigint;index:idx_btc_redeem_tx_block_number"`
+	BlockHash         string `gorm:"type:varchar(255)"`
+	TxHash            string `gorm:"type:varchar(255);index:idx_btc_redeem_tx_tx_hash;index:idx_btc_redeem_tx_chain_tx_hash,unique"`
+	TxPosition        uint   `gorm:"type:int"`
+	Amount            uint64 `gorm:"type:bigint"`
+	Timestamp         uint64 `gorm:"type:bigint"`
+	ServiceTag        string `gorm:"type:varchar(32)"`
+	CovenantQuorum    uint8  `gorm:"type:int"`
+	SessionSequence   uint64 `gorm:"type:bigint"`
+	CustodianGroupUid string `gorm:"type:varchar(255)"`
+	MerkleProof       []byte `gorm:"type:bytea"`
+	RawTx             []byte `gorm:"type:bytea"`
+}
+
+type BtcRedeemTxOutput struct {
+	gorm.Model
+	Chain       string `gorm:"type:varchar(64);index:idx_btc_redeem_tx_output_chain_tx_hash,unique"`
+	BlockNumber uint64 `gorm:"type:bigint;index:idx_btc_redeem_tx_output_block_number"`
+	BlockHash   string `gorm:"type:varchar(255)"`
+	TxHash      string `gorm:"type:varchar(255);index:idx_btc_redeem_tx_output_tx_hash;index:idx_btc_redeem_tx_output_chain_tx_hash,unique"`
+	TxPosition  uint   `gorm:"type:int"`
+	Amount      uint64 `gorm:"type:bigint"`
 }

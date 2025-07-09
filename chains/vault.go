@@ -50,7 +50,7 @@ type VaultTransaction struct {
 	Chain                       string `gorm:"type:varchar(64);index:idx_vault_tx_chain_tx_hash,unique"`
 	BlockNumber                 uint64 `gorm:"type:bigint;index:idx_vault_tx_block_number"`
 	BlockHash                   string `gorm:"type:varchar(255)"`
-	TxHash                      string `gorm:"type:varchar(255);index:idx_vault_tx_chain_tx_hash,unique"`
+	TxHash                      string `gorm:"type:varchar(255);index:idx_vault_tx_tx_hash;index:idx_vault_tx_chain_tx_hash,unique"`
 	TxPosition                  uint   `gorm:"type:int"`
 	Amount                      uint64 `gorm:"type:bigint"`
 	StakerScriptPubkey          string `gorm:"type:varchar(255)"`
