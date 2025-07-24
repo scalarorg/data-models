@@ -41,9 +41,9 @@ const (
 
 type ContractCall struct {
 	gorm.Model
-	BlockNumber      uint64             `gorm:"type:bigint"`
-	TxHash           string             `gorm:"type:varchar(255);index:idx_contract_call_tx_hash_log_index,unique"`
-	LogIndex         uint64             `gorm:"type:bigint;index:idx_contract_call_tx_hash_log_index,unique"`
+	BlockNumber      uint64             `gorm:"type:bigint;index:idx_contract_call_block_number_log_index,unique"`
+	TxHash           string             `gorm:"type:varchar(255);"`
+	LogIndex         uint64             `gorm:"type:bigint;index:idx_contract_call_block_number_log_index,unique"`
 	SourceChain      string             `gorm:"type:varchar(64)"`
 	DestinationChain string             `gorm:"type:varchar(64)"`
 	Status           ContractCallStatus `gorm:"default:pending"`
@@ -66,8 +66,14 @@ type ContractCall struct {
 // }
 
 type ContractCallWithToken struct {
-	ContractCall
-	TokenContractAddress string `gorm:"type:varchar(255)"`
-	Symbol               string `gorm:"type:varchar(255)"`
-	Amount               uint64 `gorm:"type:bigint"` //For redeem evm tx
+	gorm.Model
+	BlockNumber          uint64             `gorm:"type:bigint;index:idx_contract_call_with_token_block_number_log_index,unique"`
+	TxHash               string             `gorm:"type:varchar(255);"`
+	LogIndex             uint64             `gorm:"type:bigint;index:idx_contract_call_with_token_block_number_log_index,unique"`
+	SourceChain          string             `gorm:"type:varchar(64)"`
+	DestinationChain     string             `gorm:"type:varchar(64)"`
+	Status               ContractCallStatus `gorm:"default:pending"`
+	TokenContractAddress string             `gorm:"type:varchar(255)"`
+	Symbol               string             `gorm:"type:varchar(255)"`
+	Amount               uint64             `gorm:"type:bigint"` //For redeem evm tx
 }
